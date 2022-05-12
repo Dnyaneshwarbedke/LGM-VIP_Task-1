@@ -1,0 +1,143 @@
+1...
+import matplotlib.pyplot as plt
+names = ['a','b','c','d','e','f','g']
+values =[1,10,30,50,25,89,300]
+
+plt.bar(names,values)
+plt.show()
+plt.plot(values,names)
+plt.show()
+plt.pie(values)
+plt.show()
+
+2....
+#SORT,Transpose and shape
+import pandas as pd
+data={"Name":["Mauli","Raju","Mahi"],"Age":[20,19,24]}
+df1=pd.DataFrame(data)
+print(df1)
+print("\n")
+df1.sort_values(["Age"],ascending=[True],inplace=True)
+print(df1)
+print("\n")
+print(df1.T)
+print("\n")
+print(df1.shape)
+
+
+3.....
+#Seaborn
+from seaborn import palettes
+import seaborn as sns
+import seaborn
+import matplotlib.pyplot as plt
+data =sns.load_dataset('iris')
+sns.lineplot(x='sepal_length',y='sepal_width',data=data)
+plt.show()
+print("\n")
+df=sns.load_dataset('titanic')
+sns.barplot(x= 'who', y='fare', data=df)
+plt.show()
+print("\n")
+
+seaborn.set(style='whitegrid')
+fmri=seaborn.load_dataset("fmri")
+seaborn.scatterplot(x="timepoint",y="signal" ,data=fmri)
+
+
+
+4.....
+import numpy as np
+import pandas as pd
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+plt.style.use('bmh')
+
+#load the data
+from google.colab import files
+upload = files.upload()
+
+#Load the data
+df =pd.read_csv('stock_data.csv')
+print(df.head(6))
+print(df.shape)
+
+#visualize data
+plt.figure(figsize=(16,8))
+plt.title('Netflix')
+plt.xlabel('Days')
+plt.ylabel('Close Price USD($)')
+plt.plot(df['Close'])
+plt.show()
+
+#get the close price
+df = df[['Close']]
+print(df.head(4))
+
+#Creat a variable to predict 'x' days out into the future
+future_days = 50
+
+#Creat a new column shifted 'x' units/days up
+df['Prediction'] = df[['Close']].shift(-future_days)
+print(df.head(4))
+print(df.tail(4))
+
+#Creat future data set (x) and convert it to a numpy array and remove the last x rows/days
+x = np.array(df.drop(['Prediction'], 1))[:-future_days]
+print(x)
+
+#Creat the target data set
+y = np.array(df['Prediction'])[:-future_days]
+print(y)
+
+#split data into 75% training and 25% data testing
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.25)
+
+#Creat decission tree regressor model
+tree = DecisionTreeRegressor().fit(x_train, y_train)
+
+#Creat the linear regression model
+lr = LinearRegression().fit(x_train, y_train)
+
+#Get the last 'x' row of the future data set
+x_future = df.drop(['Prediction'], 1)[:-future_days]
+x_future = x_future.tail(future_days)
+x_future = np.array(x_future)
+print(x_future)
+
+#show the model tree prediction
+tree_prediction = tree.predict(x_future)
+print(tree_prediction)
+print ()
+
+#show the model linear regression prediction
+lr_prediction = lr.predict(x_future)
+print(lr_prediction)
+
+#visualize data
+Predictions = tree_prediction
+valid = df[x.shape[0]:]
+valid['Prediction'] = Predictions
+plt.figure(figsize=(16,8))
+plt.title('Model_tree')
+plt.xlabel('Days')
+plt.ylabel('Close Price USD($)')
+plt.plot(df['Close'])
+plt.plot(valid[['Close', 'Prediction']])
+plt.legend(['Orig','Val','Pred'])
+plt.show()
+
+#visualize data
+Predictions = lr_prediction
+valid = df[x.shape[0]:]
+valid['Prediction'] = Predictions
+plt.figure(figsize=(16,8))
+plt.title('Model_lr')
+plt.xlabel('Days')
+plt.ylabel('Close Price USD($)')
+plt.plot(df['Close'])
+plt.plot(valid[['Close', 'Prediction']])
+plt.legend(['Orig','Val','Pred'])
+plt.show()
