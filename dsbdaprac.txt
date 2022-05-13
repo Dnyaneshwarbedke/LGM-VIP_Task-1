@@ -179,6 +179,25 @@ for a in soup.findAll('a',href=True, attrs={'class':'_1fQZEK'}):
 
 ......6
 Create Histogram
+from matplotlib import pyplot as plt
+import numpy as np
+a = np.array([22, 87, 5, 43, 56,79, 31,27])
+fig, ax = plt.subplots(figsize =(10, 7))
+ax.hist(a, bins = [0, 25, 50, 75, 100])
+#Creating a Bar chart
+import matplotlib.pyplot as plt
+names = ['a','b','c','d','e','f','g']
+values =[1,10,30,50,25,89,300]
+
+plt.bar(names,values)
+plt.show()
+import matplotlib.pyplot as plt
+import numpy as np
+np.random.seed(10)
+data = np.random.normal(100, 20, 200)
+fig = plt.figure(figsize =(10, 7))
+plt.boxplot(data)
+plt.show()
 
 .....7
 from textblob import TextBlob
