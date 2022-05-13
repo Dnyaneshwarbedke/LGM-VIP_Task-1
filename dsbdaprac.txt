@@ -175,3 +175,27 @@ for a in soup.findAll('a',href=True, attrs={'class':'_1fQZEK'}):
  df.head()
  
  df.to_csv('products.csv')
+
+
+......6
+Create Histogram
+
+.....7
+from textblob import TextBlob
+sentence = ''' The Food at Radison was awesome '''
+sentence1 = ''' The Food at Radison was very good '''
+
+analysis = TextBlob(sentence).sentiment
+print(analysis,"\n")
+analysis = TextBlob(sentence1).sentiment
+print(analysis)
+
+from textblob import TextBlob
+
+sentence = '''The Food at Radison was awesome'''
+
+analysisPol = TextBlob(sentence).polarity
+analysisSub = TextBlob(sentence).subjectivity
+
+print(analysisPol)
+print(analysisSub)
